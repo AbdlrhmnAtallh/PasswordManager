@@ -87,9 +87,11 @@ namespace PasswordManager
                         else
                         {
                             _PasswordEntries.Add(SiteName, Password);
+                            SavePasswords();
                             var ItemAdded = _PasswordEntries.SingleOrDefault(e => e.Key == SiteName);
 
                             Console.WriteLine(ItemAdded.Key + " = " + ItemAdded.Value + " Added ");
+                           
                             return;
                         }
                         counter--;
@@ -115,6 +117,7 @@ namespace PasswordManager
                     else
                     {
                         _PasswordEntries.Add(SiteName, Password);
+                        SavePasswords();
                         var ItemAdded = _PasswordEntries.SingleOrDefault(e => e.Key == SiteName);
 
                         Console.WriteLine( ItemAdded.Key+" = "+ ItemAdded.Value + " Added ");
@@ -128,11 +131,44 @@ namespace PasswordManager
         }
         private static void GetPassword()
         {
-
+            Console.WriteLine("Enter App Name");
+            string AppName = Console.ReadLine();
+            if (_PasswordEntries.ContainsKey(AppName))
+            {
+                string Password = _PasswordEntries.FirstOrDefault(e => e.Key == AppName).Value;
+                Console.WriteLine(AppName + " = " + Password);
+                return;
+            }
+            Console.WriteLine("No App match this name, Please try another name");
+            int x = 3;
+            x--;
+            if (x > 0) 
+            {
+                GetPassword(); 
+            }
+             return;
         }
         private static void DeletePassword()
         {
-
+            Console.WriteLine("Enter App Name");
+            string AppName = Console.ReadLine();
+            if (_PasswordEntries.ContainsKey(AppName))
+            {
+                 _PasswordEntries.Remove(AppName);
+                Console.WriteLine(AppName + " has been deleted");
+                SavePasswords();
+                return;
+            }
+            Console.WriteLine("No App match this name");
+        }
+        private static void SavePasswords()
+        {
+            var sb = new StringBuilder();
+            foreach(var entry in _PasswordEntries)
+            {
+                sb.AppendLine($"{entry.Key} = {entry.Value}");
+            }
+            File.WriteAllText("Passwords.txt", sb.ToString());
         }
 
     }
