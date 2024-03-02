@@ -164,12 +164,11 @@ namespace PasswordManager
         private static void SavePasswords()
         {
             var sb = new StringBuilder();
-            foreach(var entry in _PasswordEntries)
-            {
-                sb.AppendLine($"{entry.Key} = {entry.Value}");
-            }
-            File.WriteAllText("Passwords.txt", sb.ToString());
+            foreach (var entry in _PasswordEntries)
+                sb.Append (EncryptionUtility.Encrypt(entry.Key + " = " + entry.Value));
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Passwords.txt");
+            Console.WriteLine("-----------------------"+filePath);
+            File.AppendAllText(filePath, sb.ToString());
         }
-
     }
 }
