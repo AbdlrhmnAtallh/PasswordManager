@@ -45,17 +45,23 @@ namespace PasswordManager
 
         private static void ListAllPasswords()
         {
-            if (_PasswordEntries.Count > 0)
-            {
-                int i = 0;
-                foreach (var entry in _PasswordEntries)
-                {
-                    i++;
-                    Console.WriteLine(i+"- "+ entry.Key + " = " + entry.Value);
-                }
-                return;
-            }
-            Console.WriteLine("No Passwords");
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Passwords.txt");
+            StreamReader sr = new(filePath);
+            var passwords =sr.ReadToEnd();
+            EncryptionUtility.Decrypt(passwords);
+
+            //if (_PasswordEntries.Count > 0)
+            //{
+            //    int i = 0;
+            //    foreach (var entry in _PasswordEntries)
+            //    {
+            //        i++;
+            //        Console.WriteLine(i+"- "+ entry.Key + " = " + entry.Value);
+            //    }
+            //    return;
+            //}
+            //Console.WriteLine("No Passwords");
+
         }
         private static void AddOrChangePassword()
         {
@@ -167,7 +173,6 @@ namespace PasswordManager
             foreach (var entry in _PasswordEntries)
                 sb.Append (EncryptionUtility.Encrypt(entry.Key + " = " + entry.Value));
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Passwords.txt");
-            Console.WriteLine("-----------------------"+filePath);
             File.AppendAllText(filePath, sb.ToString());
         }
     }

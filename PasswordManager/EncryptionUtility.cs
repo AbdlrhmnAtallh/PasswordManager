@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,9 +28,20 @@ namespace PasswordManager
             return ReturnedSb;
         }
 
-        public static StringBuilder Decrypt(StringBuilder sb)
+        public static String Decrypt(String sb)
         {
-
+            for(int i = 0; i<sb.Length;i++)
+            {
+                for (int j = 0; j < _AltChars.Length; j++)
+                {
+                    if (sb[i] == _AltChars[j])
+                    {
+                        sb[i] = _AllChars[j];
+                        break;
+                    }
+                }
+            }
+            return sb;
         }
     }
 
