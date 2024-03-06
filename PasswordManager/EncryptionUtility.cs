@@ -9,8 +9,8 @@ namespace PasswordManager
 {
     internal class EncryptionUtility
     {
-        private static readonly string _AllChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        private static readonly string _AltChars = "xvXOq6HmGLCcRfK8YUw2bZ1rjMzg0Af3nBv7lDy4iQJ9dNp5kPStaWTuFhsoVeI";
+        private static readonly string _AllChars = " =ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private static readonly string _AltChars = " =xvXOq6HmGLCcRfK8YUw2bZ1rjMzg0Af3nBv7lDy4iQJ9dNp5kPStaWTuFhsoVeI";
         public static StringBuilder Encrypt(string Password)
         {
             var ReturnedSb = new StringBuilder();
@@ -28,8 +28,9 @@ namespace PasswordManager
             return ReturnedSb;
         }
 
-        public static String Decrypt(String sb)
+        public static StringBuilder Decrypt(string filetext)
         {
+            StringBuilder sb = new StringBuilder(filetext);
             for(int i = 0; i<sb.Length;i++)
             {
                 for (int j = 0; j < _AltChars.Length; j++)

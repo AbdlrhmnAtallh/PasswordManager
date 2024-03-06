@@ -48,7 +48,10 @@ namespace PasswordManager
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Passwords.txt");
             StreamReader sr = new(filePath);
             var passwords =sr.ReadToEnd();
-            EncryptionUtility.Decrypt(passwords);
+            Console.WriteLine(passwords);
+            Console.WriteLine("---------");
+           StringBuilder sb= EncryptionUtility.Decrypt(passwords);
+            Console.WriteLine(sb);
 
             //if (_PasswordEntries.Count > 0)
             //{
@@ -123,6 +126,7 @@ namespace PasswordManager
                     else
                     {
                         _PasswordEntries.Add(SiteName, Password);
+                        
                         SavePasswords();
                         var ItemAdded = _PasswordEntries.SingleOrDefault(e => e.Key == SiteName);
 
@@ -157,7 +161,7 @@ namespace PasswordManager
         private static void DeletePassword()
         {
             Console.WriteLine("Enter App Name");
-            string AppName = Console.ReadLine();
+            string AppName = Console.ReadLine();// need to decrypt and search abt app name
             if (_PasswordEntries.ContainsKey(AppName))
             {
                  _PasswordEntries.Remove(AppName);
@@ -173,7 +177,9 @@ namespace PasswordManager
             foreach (var entry in _PasswordEntries)
                 sb.Append (EncryptionUtility.Encrypt(entry.Key + " = " + entry.Value));
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Passwords.txt");
-            File.AppendAllText(filePath, sb.ToString());
+            //File.AppendAllText(filePath, sb.ToString());
+            File.WriteAllLines(filePath,sb.ToString())
         }
+
     }
 }
